@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Suite User Management</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <h1>Google Workspace Management</h1>
+    <div id="app">
+      <button id="loginBtn">Login (Update Token)</button>
+      <div
+        id="slotInfo"
+        style="margin-bottom: 18px; margin-top: 18px; font-weight: 600; color: #222; font-size: 1.08rem; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px"
+      >
+        <span
+          style="
+            background: #e0e7ff;
+            padding: 4px 18px;
+            border-radius: 16px;
+            font-size: 1.08rem;
+            box-shadow: 0 1px 4px #bfc9e033;
+          "
+        >
+          <span id="slotUsed" style="color: #4285f4; font-weight: 700">-</span>
+          <span style="color: #888">/</span>
+          <span id="slotMax" style="color: #2d3a5a">200</span>
+        </span>
+      </div>
+      <form id="createMultiForm" style="margin-top: 20px">
+        <input type="number" name="count" min="1" max="50" value="1" required />
+        <input
+          type="text"
+          name="customEmail"
+          placeholder="Custom Email (opsional)"
+          style="flex: 2"
+          pattern="^[^@\s]+$"
+          title="Tanpa @domain"
+        />
+        <button type="submit">Buat User Otomatis</button>
+      </form>
+      <div id="result"></div>
+      <button id="gotoDelete" style="margin-top: 20px">Delete User</button>
+    </div>
+    <script src="/static/app.js"></script>
+  </body>
+</html>
