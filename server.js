@@ -71,6 +71,7 @@ app.get("/static/delete.js", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "delete.js"));
 });
 
-app.listen(3000, () =>
-  console.log("\uD83D\uDE80 Server running http://localhost:3000"),
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () =>
+  console.log(`\uD83D\uDE80 Server running http://localhost:${PORT}`),
 );
