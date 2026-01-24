@@ -1,48 +1,135 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Google Suite User Management</title>
+    <title>Google Workspace Management</title>
     <link rel="stylesheet" href="/static/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <h1>Google Workspace Management</h1>
-    <div id="app">
-      <button id="loginBtn">Login (Update Token)</button>
-      <div
-        id="slotInfo"
-        style="margin-bottom: 18px; margin-top: 18px; font-weight: 600; color: #222; font-size: 1.08rem; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px"
-      >
-        <span
-          style="
-            background: #e0e7ff;
-            padding: 4px 18px;
-            border-radius: 16px;
-            font-size: 1.08rem;
-            box-shadow: 0 1px 4px #bfc9e033;
-          "
-        >
-          <span id="slotUsed" style="color: #4285f4; font-weight: 700">-</span>
-          <span style="color: #888">/</span>
-          <span id="slotMax" style="color: #2d3a5a">200</span>
-        </span>
-      </div>
-      <form id="createMultiForm" style="margin-top: 20px">
-        <input type="number" name="count" min="1" max="50" value="1" required />
-        <input
-          type="text"
-          name="customEmail"
-          placeholder="Custom Email (opsional)"
-          style="flex: 2"
-          pattern="^[^@\s]+$"
-          title="Tanpa @domain"
-        />
-        <button type="submit">Buat User Otomatis</button>
-      </form>
-      <div id="result"></div>
-      <button id="gotoDelete" style="margin-top: 20px">Delete User</button>
+    <div class="cosmic-bg">
+      <div class="stars"></div>
+      <div class="nebula"></div>
     </div>
+
+    <div class="container">
+      <!-- Header Card -->
+      <div class="header-card">
+        <div class="header-content">
+          <div class="logo-section">
+            <i class="fas fa-users-cog logo-icon"></i>
+            <h1>Google Workspace</h1>
+            <span class="subtitle">Management Console</span>
+          </div>
+
+          <!-- Auth Card -->
+          <div class="auth-card">
+            <button id="loginBtn" class="auth-btn">
+              <i class="fas fa-key"></i>
+              <span>Authenticate</span>
+              <div class="btn-glow"></div>
+            </button>
+
+            <!-- Slot Info -->
+            <div id="slotInfo" class="slot-info">
+              <div class="slot-badge">
+                <i class="fas fa-database"></i>
+                <span class="slot-text">
+                  <span id="slotUsed">-</span>/<span id="slotMax">200</span>
+                </span>
+                <div class="slot-bar">
+                  <div class="slot-fill" id="slotFill"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Dashboard -->
+      <div class="dashboard">
+        <!-- Create Users Card -->
+        <div class="card create-card">
+          <div class="card-header">
+            <i class="fas fa-user-plus"></i>
+            <h3>Create Users</h3>
+            <div class="card-decoration"></div>
+          </div>
+
+          <form id="createMultiForm" class="create-form">
+            <div class="input-group">
+              <div class="input-field">
+                <i class="fas fa-hashtag"></i>
+                <input
+                  type="number"
+                  name="count"
+                  min="1"
+                  max="50"
+                  value="1"
+                  required
+                  placeholder="Count"
+                />
+                <span class="input-border"></span>
+              </div>
+
+              <div class="input-field">
+                <i class="fas fa-at"></i>
+                <input
+                  type="text"
+                  name="customEmail"
+                  placeholder="Custom Username (optional)"
+                  pattern="^[^@\s]+$"
+                  title="Username only"
+                />
+                <span class="input-border"></span>
+              </div>
+            </div>
+
+            <button type="submit" class="create-btn">
+              <i class="fas fa-magic"></i>
+              <span>Generate Users</span>
+              <div class="btn-ripple"></div>
+            </button>
+          </form>
+        </div>
+
+        <!-- Results Card -->
+        <div class="card results-card" id="resultsCard" style="display: none">
+          <div class="card-header">
+            <i class="fas fa-chart-line"></i>
+            <h3>Results</h3>
+            <div class="card-decoration"></div>
+          </div>
+          <div id="result" class="results-content"></div>
+        </div>
+
+        <!-- Management Card -->
+        <div class="card management-card">
+          <div class="card-header">
+            <i class="fas fa-cogs"></i>
+            <h3>User Management</h3>
+            <div class="card-decoration"></div>
+          </div>
+
+          <button id="gotoDelete" class="management-btn">
+            <i class="fas fa-users-slash"></i>
+            <span>Manage Users</span>
+            <div class="btn-glow"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script src="/static/app.js"></script>
   </body>
 </html>

@@ -25,7 +25,7 @@ router.get("/list", async (req, res) => {
   try {
     const users = await admin.users.list({
       customer: "my_customer",
-      maxResults: 50,
+      maxResults: 200, // Increase to match MAX_SLOT
       orderBy: "email",
     });
     // Format waktu
@@ -41,7 +41,7 @@ router.get("/list", async (req, res) => {
       _createdRaw: u.creationTime,
     }));
     enriched = enriched.sort(
-      (a, b) => new Date(b._createdRaw) - new Date(a._createdRaw)
+      (a, b) => new Date(b._createdRaw) - new Date(a._createdRaw),
     );
     res.json(enriched);
   } catch (err) {

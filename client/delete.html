@@ -1,17 +1,94 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Delete Google Users</title>
+    <title>User Management - Google Workspace</title>
     <link rel="stylesheet" href="/static/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <h1>Delete Google Users</h1>
-    <div id="deleteApp">
-      <button onclick="window.location.href='/'">⬅️ Kembali</button>
-      <div id="userList">Loading...</div>
+    <div class="cosmic-bg">
+      <div class="stars"></div>
+      <div class="nebula"></div>
     </div>
+
+    <div class="container">
+      <!-- Header Card -->
+      <div class="header-card">
+        <div class="header-content">
+          <div class="logo-section">
+            <i class="fas fa-users-slash logo-icon"></i>
+            <h1>User Management</h1>
+            <span class="subtitle">Delete & Monitor Users</span>
+          </div>
+
+          <button onclick="window.location.href = '/'" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back to Dashboard</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Users List Card -->
+      <div class="card users-list-card">
+        <div class="card-header">
+          <i class="fas fa-list"></i>
+          <h3>Active Users</h3>
+          <div class="card-decoration"></div>
+        </div>
+
+        <!-- Search and Counter Controls -->
+        <div class="search-controls">
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Search users by email or name..."
+            />
+          </div>
+          <div class="email-counter">
+            <i class="fas fa-envelope"></i>
+            <span id="emailCounter">Loading...</span>
+          </div>
+        </div>
+
+        <div class="users-content">
+          <div id="userList" class="user-table-container">Loading users...</div>
+
+          <!-- Pagination Controls -->
+          <div
+            class="pagination-controls"
+            id="paginationControls"
+            style="display: none"
+          >
+            <div class="pagination-info" id="paginationInfo"></div>
+            <div class="pagination-buttons">
+              <button class="page-btn" id="prevBtn">
+                <i class="fas fa-chevron-left"></i>
+                Previous
+              </button>
+              <div class="page-numbers" id="pageNumbers"></div>
+              <button class="page-btn" id="nextBtn">
+                Next
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="/static/delete.js"></script>
   </body>
 </html>
