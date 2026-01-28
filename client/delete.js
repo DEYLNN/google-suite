@@ -2,7 +2,7 @@
 let allUsers = [];
 let filteredUsers = [];
 let currentPage = 1;
-const usersPerPage = 50;
+const usersPerPage = 10;
 
 function getAuthHeaders() {
   const tokenData = JSON.parse(localStorage.getItem("authToken") || "{}");
@@ -64,8 +64,8 @@ async function loadUsers() {
     filteredUsers = [...allUsers];
     currentPage = 1;
 
-    // Simulate loading delay for better UX
-    await new Promise((resolve) => setTimeout(resolve, 800));
+    // Reduced loading delay for better performance
+    await new Promise((resolve) => setTimeout(resolve, 200));
 
     hideLoadingOverlay();
     updateDisplay();
@@ -92,7 +92,7 @@ function getTotalPages() {
 function renderUsers() {
   const currentUsers = getCurrentPageUsers();
   let html = `<div class='table-responsive'><table>`;
-  html += `<tr><th><i class="fas fa-envelope"></i> Email</th><th><i class="fas fa-user"></i> Nama</th><th><i class="fas fa-clock"></i> Last Login</th><th><i class="fas fa-calendar-plus"></i> Created</th><th><i class="fas fa-trash"></i> Delete</th></tr>`;
+  html += `<tr><th><i class="fas fa-envelope"></i> Email</th><th><i class="fas fa-user"></i> Nama</th><th><i class="fas fa-clock"></i> Last Login</th><th><i class="fas fa-calendar-plus"></i> Created</th><th><i class="fas fa-cogs"></i> Actions</th></tr>`;
 
   if (currentUsers.length === 0) {
     html += `<tr><td colspan="5" style="text-align: center; color: rgba(255,255,255,0.6);">No users found</td></tr>`;
@@ -109,7 +109,10 @@ function renderUsers() {
         <td>${user.name.givenName} ${user.name.familyName}</td>
         <td>${lastLoginDisplay}</td>
         <td>${user.created}</td>
-        <td><button class='delBtn' data-email='${user.primaryEmail}'><i class="fas fa-trash-alt"></i> Delete</button></td>
+        <td class="action-buttons">
+          <button class='copyBtn' data-email='${user.primaryEmail}' title="Copy Email"><i class="fas fa-copy"></i></button>
+          <button class='delBtn' data-email='${user.primaryEmail}' title="Delete User"><i class="fas fa-trash-alt"></i></button>
+        </td>
       </tr>`;
     });
   }
@@ -117,7 +120,25 @@ function renderUsers() {
   html += `</table></div>`;
   document.getElementById("userList").innerHTML = html;
 
-  // Reattach event listeners
+  // Reattach event listeners for copy buttons
+  document.querySelectorAll(".copyBtn").forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const email = this.dataset.email;
+      navigator.clipboard.writeText(email).then(() => {
+        const originalIcon = this.innerHTML;
+        this.innerHTML = '<i class="fas fa-check"></i>';
+        this.style.backgroundColor = '#10B981';
+        setTimeout(() => {
+          this.innerHTML = originalIcon;
+          this.style.backgroundColor = '';
+        }, 1000);
+      }).catch(() => {
+        alert('Failed to copy email!');
+      });
+    });
+  });
+
+  // Reattach event listeners for delete buttons
   document.querySelectorAll(".delBtn").forEach((btn) => {
     btn.addEventListener("click", async function () {
       if (confirm("Delete user " + this.dataset.email + "?")) {

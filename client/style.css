@@ -5,6 +5,12 @@
   box-sizing: border-box;
 }
 
+html {
+  /* Global scroll optimization */
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
   font-family:
     "Inter",
@@ -16,6 +22,11 @@ body {
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
+  /* Optimize scrolling performance */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  /* Prevent layout shifts */
+  transform: translateZ(0);
 }
 
 /* Cosmic Background */
@@ -84,7 +95,7 @@ body {
       rgba(255, 119, 198, 0.08) 0%,
       transparent 50%
     );
-  animation: float 30s ease-in-out infinite;
+  /* animation: float 30s ease-in-out infinite; - Disabled to prevent lag */
 }
 
 @keyframes sparkle {
@@ -116,6 +127,9 @@ body {
   padding: 2rem;
   position: relative;
   z-index: 1;
+  /* Optimize container for smooth scrolling */
+  transform: translateZ(0);
+  will-change: auto;
 }
 
 /* Header Card */
@@ -298,13 +312,16 @@ body {
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
   position: relative;
   overflow: hidden;
+  /* Optimize for smooth scrolling */
+  transform: translateZ(0);
+  will-change: auto;
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-3px) translateZ(0);
   box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -462,13 +479,17 @@ body {
   overflow-x: auto;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
+  /* backdrop-filter: blur(10px); - Removed to prevent scroll stuttering */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 table {
   width: 100%;
   border-collapse: collapse;
   background: transparent;
+  will-change: auto;
+  transform: translateZ(0);
 }
 
 th,
@@ -489,6 +510,7 @@ th {
 
 tr:hover {
   background: rgba(255, 255, 255, 0.05);
+  /* transition removed to prevent scroll stuttering */
 }
 
 tr[style*="color:green;"] td {
@@ -499,23 +521,84 @@ tr[style*="color:red;"] td {
   color: #f87171;
 }
 
-.copyBtn,
-.delBtn {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
 }
 
-.copyBtn:hover,
+.copyBtn {
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  position: relative;
+  min-width: 36px;
+  height: 32px;
+  justify-content: center;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.copyBtn:hover {
+  transform: translateY(-1px) translateZ(0);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.delBtn {
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  position: relative;
+  min-width: 36px;
+  height: 32px;
+  justify-content: center;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
 .delBtn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+  transform: translateY(-1px) translateZ(0);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+/* Tooltip styling */
+[title] {
+  position: relative;
+}
+
+[title]:hover:after {
+  content: attr(title);
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  z-index: 1000;
+  pointer-events: none;
 }
 
 /* User List specific */
@@ -523,7 +606,7 @@ tr[style*="color:red;"] td {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 16px;
   overflow: hidden;
-  backdrop-filter: blur(10px);
+  /* backdrop-filter removed to prevent rendering issues during scroll */
 }
 
 .users-content {
@@ -921,7 +1004,7 @@ tr[style*="color:red;"] td {
   position: absolute;
   border: 1px solid rgba(102, 126, 234, 0.3);
   border-radius: 50%;
-  animation: rotate 3s linear infinite;
+  animation: rotate 6s linear infinite;
 }
 
 .orbit:nth-child(1) {
@@ -936,7 +1019,7 @@ tr[style*="color:red;"] td {
   height: 80px;
   top: 20px;
   left: 20px;
-  animation-duration: 2s;
+  animation-duration: 4s;
   animation-direction: reverse;
 }
 
@@ -945,7 +1028,7 @@ tr[style*="color:red;"] td {
   height: 40px;
   top: 40px;
   left: 40px;
-  animation-duration: 1s;
+  animation-duration: 2s;
 }
 
 .planet {
@@ -1179,5 +1262,33 @@ tr[style*="color:red;"] td {
   th,
   td {
     padding: 0.75rem 0.5rem;
+  }
+
+  /* Make table responsive */
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 600px;
+  }
+
+  .action-buttons {
+    flex-direction: row;
+    gap: 0.25rem;
+    justify-content: center;
+  }
+
+  .copyBtn,
+  .delBtn {
+    padding: 0.3rem 0.4rem;
+    font-size: 0.75rem;
+    min-width: 30px;
+    height: 28px;
+  }
+
+  .copyBtn i,
+  .delBtn i {
+    font-size: 0.7rem;
   }
 }
