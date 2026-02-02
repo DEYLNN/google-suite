@@ -98,17 +98,20 @@ function renderUsers() {
     html += `<tr><td colspan="5" style="text-align: center; color: rgba(255,255,255,0.6);">No users found</td></tr>`;
   } else {
     currentUsers.forEach((user, idx) => {
-      const lastLoginDisplay =
-        user.lastLogin === "Invalid Date" ||
-        user.lastLogin === "01/01/1970, 07.00.00" ||
-        user.lastLogin === "1/1/1970, 07.00.00"
-          ? "-"
-          : user.lastLogin;
+      // Format tanggal ke WIB (Asia/Jakarta)
+      function toWIB(dateStr) {
+        if (!dateStr || dateStr === "Invalid Date" || dateStr === "01/01/1970, 07.00.00" || dateStr === "1/1/1970, 07.00.00") return "-";
+        let d = new Date(dateStr);
+        if (isNaN(d)) return dateStr;
+        return d.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false });
+      }
+      const lastLoginDisplay = toWIB(user.lastLogin);
+      const createdDisplay = toWIB(user.created);
       html += `<tr>
         <td><b>${user.primaryEmail}</b></td>
         <td>${user.name.givenName} ${user.name.familyName}</td>
         <td>${lastLoginDisplay}</td>
-        <td>${user.created}</td>
+        <td>${createdDisplay}</td>
         <td class="action-buttons">
           <button class='copyBtn' data-email='${user.primaryEmail}' title="Copy Email"><i class="fas fa-copy"></i></button>
           <button class='delBtn' data-email='${user.primaryEmail}' title="Delete User"><i class="fas fa-trash-alt"></i></button>
@@ -330,25 +333,47 @@ function updateDisplay() {
 
 function setupSearch() {
   const searchInput = document.getElementById("searchInput");
-  if (!searchInput) return;
+  const filterSelect = document.getElementById("filterSelect");
+  
+  if (!searchInput || !filterSelect) return;
 
-  searchInput.addEventListener("input", function (e) {
-    const query = e.target.value.toLowerCase().trim();
+  function applyFilters() {
+    const query = searchInput.value.toLowerCase().trim();
+    const filterValue = filterSelect.value;
 
-    if (query === "") {
+    if (query === "" && filterValue === "all") {
       filteredUsers = [...allUsers];
     } else {
       filteredUsers = allUsers.filter((user) => {
         const email = user.primaryEmail.toLowerCase();
-        const name =
-          `${user.name.givenName} ${user.name.familyName}`.toLowerCase();
-        return email.includes(query) || name.includes(query);
+        const name = `${user.name.givenName} ${user.name.familyName}`.toLowerCase();
+        const searchMatch = query === "" || email.includes(query) || name.includes(query);
+        
+        let filterMatch = true;
+        if (filterValue === "never-login") {
+          filterMatch = user.lastLogin === "Invalid Date" ||
+                       user.lastLogin === "01/01/1970, 07.00.00" ||
+                       user.lastLogin === "1/1/1970, 07.00.00" ||
+                       user.lastLogin === "-" ||
+                       !user.lastLogin;
+        } else if (filterValue === "has-login") {
+          filterMatch = user.lastLogin !== "Invalid Date" &&
+                       user.lastLogin !== "01/01/1970, 07.00.00" &&
+                       user.lastLogin !== "1/1/1970, 07.00.00" &&
+                       user.lastLogin !== "-" &&
+                       user.lastLogin;
+        }
+        
+        return searchMatch && filterMatch;
       });
     }
 
-    currentPage = 1; // Reset to first page when searching
+    currentPage = 1; // Reset to first page when filtering
     updateDisplay();
-  });
+  }
+
+  searchInput.addEventListener("input", applyFilters);
+  filterSelect.addEventListener("change", applyFilters);
 }
 
 loadUsers();

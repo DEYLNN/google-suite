@@ -77,7 +77,7 @@ body {
     );
   background-repeat: repeat;
   background-size: 200px 100px;
-  animation: sparkle 20s linear infinite;
+  /* animation: sparkle 20s linear infinite; - Disabled to prevent lag */
 }
 
 .nebula {
@@ -676,6 +676,42 @@ tr[style*="color:red;"] td {
 
 .email-counter i {
   color: #667eea;
+}
+
+.filter-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.filter-box i {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.filter-box select {
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 0.9rem;
+  outline: none;
+  min-width: 160px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.filter-box select:focus {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.filter-box select option {
+  background: #1e293b;
+  color: #ffffff;
+  padding: 0.5rem;
 }
 
 /* Pagination */

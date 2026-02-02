@@ -56,6 +56,14 @@
               placeholder="Search users by email or name..."
             />
           </div>
+          <div class="filter-box">
+            <i class="fas fa-filter"></i>
+            <select id="filterSelect">
+              <option value="all">All Users</option>
+              <option value="never-login">Never Logged In</option>
+              <option value="has-login">Has Logged In</option>
+            </select>
+          </div>
           <div class="email-counter">
             <i class="fas fa-envelope"></i>
             <span id="emailCounter">Loading...</span>
