@@ -98,13 +98,7 @@ function renderUsers() {
     html += `<tr><td colspan="5" style="text-align: center; color: rgba(255,255,255,0.6);">No users found</td></tr>`;
   } else {
     currentUsers.forEach((user, idx) => {
-      // Format tanggal ke WIB (Asia/Jakarta)
-      function toWIB(dateStr) {
-        if (!dateStr || dateStr === "Invalid Date" || dateStr === "01/01/1970, 07.00.00" || dateStr === "1/1/1970, 07.00.00") return "-";
-        let d = new Date(dateStr);
-        if (isNaN(d)) return dateStr;
-        return d.toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false });
-      }
+      // Use global utility functions for consistent datetime handling
       const lastLoginDisplay = toWIB(user.lastLogin);
       const createdDisplay = toWIB(user.created);
       html += `<tr>
@@ -351,17 +345,9 @@ function setupSearch() {
         
         let filterMatch = true;
         if (filterValue === "never-login") {
-          filterMatch = user.lastLogin === "Invalid Date" ||
-                       user.lastLogin === "01/01/1970, 07.00.00" ||
-                       user.lastLogin === "1/1/1970, 07.00.00" ||
-                       user.lastLogin === "-" ||
-                       !user.lastLogin;
+          filterMatch = isNeverLoggedIn(user.lastLogin);
         } else if (filterValue === "has-login") {
-          filterMatch = user.lastLogin !== "Invalid Date" &&
-                       user.lastLogin !== "01/01/1970, 07.00.00" &&
-                       user.lastLogin !== "1/1/1970, 07.00.00" &&
-                       user.lastLogin !== "-" &&
-                       user.lastLogin;
+          filterMatch = hasLoggedIn(user.lastLogin);
         }
         
         return searchMatch && filterMatch;

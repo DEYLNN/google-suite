@@ -28,11 +28,10 @@ router.get("/list", async (req, res) => {
       maxResults: 200, // Increase to match MAX_SLOT
       orderBy: "email",
     });
-    // Format waktu
+    // Format waktu ke UTC timestamp untuk frontend handle timezone
     const formatDate = (iso) => {
-      if (!iso) return "-";
-      const d = new Date(iso);
-      return d.toLocaleString("id-ID", { hour12: false });
+      if (!iso || iso === "1970-01-01T00:00:00.000Z") return null;
+      return iso; // Return raw ISO string, let frontend handle timezone
     };
     let enriched = (users.data.users || []).map((u) => ({
       ...u,
